@@ -16,8 +16,6 @@ pub enum GrafanaState {
 pub struct GrafanaPayload {
     #[serde(alias = "dashboardId")]
     pub dashboard_id: u64,
-    #[serde(alias = "evalMatches")]
-    pub eval_matches: Vec<Match>,
     // Note(andrew): 'message' field is not always present.
     pub message: Option<String>,
     #[serde(alias = "orgId")]
