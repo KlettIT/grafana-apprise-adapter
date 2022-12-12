@@ -19,7 +19,7 @@ pub async fn notify(
         Err(_) => return HttpResponse::BadRequest().finish(),
     };
     let authorization_header = req.headers().get(header::AUTHORIZATION);
-    return match client
+    match client
         .post(apprise_url.as_str())
         .if_some(authorization_header, |header, builder| {
             builder.set_header(header::AUTHORIZATION, header.clone())
