@@ -22,7 +22,6 @@ jobs:
     strategy:
       matrix:
         platform: [linux/386, linux/amd64, linux/arm64/v8]
-    needs: test
     steps:
       - uses: actions/checkout@v3
 
@@ -65,82 +64,3 @@ jobs:
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout sources
-        uses: actions/checkout@v3
-
-      - uses: actions/cache@v1
-        with:
-          path: $HOME/.cargo
-          key: cargo-${{ hashFiles('Cargo.lock') }}
-
-      - name: Install stable toolchain
-        uses: actions-rs/toolchain@v1
-        with:
-          profile: minimal
-          toolchain: stable
-          override: true
-
-      - name: Build
-        uses: actions-rs/cargo@v1
-        with:
-          command: build
-          args: --release
-
-  test:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout sources
-        uses: actions/checkout@v3
-
-      - uses: actions/cache@v1
-        with:
-          path: $HOME/.cargo
-          key: cargo-${{ hashFiles('Cargo.lock') }}
-
-      - name: Install stable toolchain
-        uses: actions-rs/toolchain@v1
-        with:
-          profile: minimal
-          toolchain: stable
-          override: true
-          components: clippy
-
-      - name: Check
-        uses: actions-rs/cargo@v1
-        with:
-          command: check
-
-      - name: Test
-        uses: actions-rs/cargo@v1
-        with:
-          command: test
-
-      - name: Run cargo clippy
-        uses: actions-rs/cargo@v1
-        with:
-          command: clippy
-          args: -- -D warnings
-
-  lint:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout sources
-        uses: actions/checkout@v3
-
-      - name: Install stable toolchain
-        uses: actions-rs/toolchain@v1
-        with:
-          profile: minimal
-          toolchain: stable
-          override: true
-          components: rustfmt
-
-      - name: Run cargo fmt
-        uses: actions-rs/cargo@v1
-        with:
-          command: fmt
-          args: --all -- --check
