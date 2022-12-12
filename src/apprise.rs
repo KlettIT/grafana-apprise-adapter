@@ -28,7 +28,7 @@ impl From<GrafanaState> for AppriseState {
 #[derive(Serialize, Debug)]
 pub struct ApprisePayload {
     pub title: String,
-    pub body: String,
+    pub body: Option<String>,
 
     #[serde(rename = "type")]
     pub notification_type: AppriseState,
