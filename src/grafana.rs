@@ -14,12 +14,23 @@ pub enum GrafanaState {
 
 #[derive(Deserialize, Debug)]
 pub struct GrafanaPayload {
-    pub title: String,
-    pub message: String,
+    #[serde(alias = "dashboardId")]
+    pub dashboard_id: u64,
+    #[serde(alias = "evalMatches")]
+    pub eval_matches: Vec<Match>,
+    // Note(andrew): 'message' field is not always present.
+    pub message: Option<String>,
+    #[serde(alias = "orgId")]
+    pub org_id: u64,
+    #[serde(alias = "panelId")]
+    pub panel_id: u64,
+    #[serde(alias = "ruleId")]
+    pub rule_id: u64,
+    #[serde(alias = "ruleName")]
+    pub rule_name: String,
+    #[serde(alias = "ruleUrl")]
+    pub rule_url: String,
     pub state: GrafanaState,
-
-    #[serde(rename = "imageUrl")]
-    pub image: String,
-
-    pub tags: HashMap<String, String>,
+    pub tags:HashMap<String, String>,
+    pub title: String,    
 }
